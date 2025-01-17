@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banking Webpage</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #0047ab;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin: 15px 0 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        button {
+            display: block;
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px auto;
+            background-color: #0047ab;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #003380;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Banking System</h1>
+
+        <label for="account-name">Account Name</label>
+        <input type="text" id="account-name" placeholder="Enter account name">
+
+        <label for="initial-deposit">Initial Deposit</label>
+        <input type="number" id="initial-deposit" placeholder="Enter initial deposit">
+
+        <button onclick="createAccount()">Create Account</button>
+
+        <label for="transaction-amount">Transaction Amount</label>
+        <input type="number" id="transaction-amount" placeholder="Enter amount">
+
+        <button onclick="deposit()">Deposit</button>
+        <button onclick="withdraw()">Withdraw</button>
+        <button onclick="checkBalance()">Check Balance</button>
+
+        <div class="output" id="output"></div>
+    </div>
+
+    <script>
+        let account = {
+            name: "",
+            balance: 0
+        };
+
+        function createAccount() {
+            const name = document.getElementById("account-name").value;
+            const initialDeposit = parseFloat(document.getElementById("initial-deposit").value);
+
+            if (!name || isNaN(initialDeposit) || initialDeposit < 0) {
+                displayMessage("Please enter valid account details.");
+                return;
+            }
+
+            account.name = name;
+            account.balance = initialDeposit;
+            displayMessage(`Account created for ${name} with an initial balance of $${initialDeposit.toFixed(2)}.`);
+        }
+
+        function deposit() {
+            const amount = parseFloat(document.getElementById("transaction-amount").value);
+
+            if (isNaN(amount) || amount <= 0) {
+                displayMessage("Please enter a valid deposit amount.");
+                return;
+            }
+
+            account.balance += amount;
+            displayMessage(`Deposited $${amount.toFixed(2)}. New balance: $${account.balance.toFixed(2)}.`);
+        }
+
+        function withdraw() {
+            const amount = parseFloat(document.getElementById("transaction-amount").value);
+
+            if (isNaN(amount) || amount <= 0) {
+                displayMessage("Please enter a valid withdrawal amount.");
+                return;
+            }
+
+            if (amount > account.balance) {
+                displayMessage("Insufficient funds for withdrawal.");
+                return;
+            }
+
+            account.balance -= amount;
+            displayMessage(`Withdrew $${amount.toFixed(2)}. New balance: $${account.balance.toFixed(2)}.`);
+        }
+
+        function checkBalance() {
+            displayMessage(`Account Name: ${account.name}<br>Current Balance: $${account.balance.toFixed(2)}`);
+        }
+
+        function displayMessage(message) {
+            const output = document.getElementById("output");
+            output.innerHTML = message;
+        }
+    </script>
+</body>
+</html>
